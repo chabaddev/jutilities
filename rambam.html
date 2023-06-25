@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<HTML>
+<body>
+    <H1 id="onechapter"></H1>
+    <H1 id="threechapter"></H1>
+<script>
+const RAMBAM_CONTENTS = {
+    "Hakdama":{
+        "Hakdama":3,
+        "Asay":3,
+        "Lo sasey":1,
+        "perakim":3
+
+    },
+    "Sefer Madda": {
+        "Yesodei haTorah": 10,
+        "De'ot": 7,
+        "Talmud Torah": 7,
+        "Avodat Kochavim": 12,
+        "Teshuvah": 10
+    },
+    "Sefer Ahavah": {
+        "Kri'at Shema": 4,
+        "Tefilah and Birkat Kohanim": 15,
+        "Tefillin, Mezuzah and Sefer Torah": 10,
+        "Tzitzit": 3,
+        "Berachot": 11,
+        "Milah": 3,
+        "tefilos": 3
+    },
+    "Sefer Zemanim": {
+        "Shabbat": 30,
+        "Eruvin": 8,
+        "Shevitat Asor": 3,
+        "Shevitat Yom Tov": 8,
+        "Chametz U'Matzah": 9,
+        "Shofar, Sukkah, vLulav": 8,
+        "Shekalim": 4,
+        "Kiddush HaChodesh": 19,
+        "Ta'aniyot": 5,
+        "Megillah vChanukah": 4
+    },
+    "Sefer Nashim": {
+        "Ishut": 25,
+        "Gerushin": 13,
+        "Yibbum vChalitzah": 8,
+        "Naarah Betulah": 3,
+        "Sotah": 4
+    },
+    "Sefer Kedushah": {"Issurei Biah": 22, "Ma'achalot Assurot": 17, "Shechitah": 14},
+    "Sefer Hafla'ah": {
+        "Shvuot": 12,
+        "Nedarim": 13,
+        "Nezirut": 10,
+        "Arachim Vacharamim": 8
+    },
+    "Sefer Zeraim": {
+        "Kilaayim": 10,
+        "Matnot Aniyim": 10,
+        "Terumot": 15,
+        "Maaser": 14,
+        "Maaser Sheini": 11,
+        "Bikkurim": 12,
+        "Shemita": 13
+    },
+    "Sefer Avodah": {
+        "Beit Habechirah": 8,
+        "Klei Hamikdash": 10,
+        "Biat Hamikdash": 9,
+        "Issurei Mizbeiach": 7,
+        "Maaseh Hakorbanot": 19,
+        "Temidin uMusafim": 10,
+        "Pesulei Hamukdashim": 19,
+        "Avodat Yom haKippurim": 5,
+        "Me'ilah": 8
+    },
+    "Sefer Korbanot": {
+        "Korban Pesach": 10,
+        "Chagigah": 3,
+        "Bechorot": 8,
+        "Shegagot": 15,
+        "Mechussarey Kapparah": 5,
+        "Temurah": 4
+    },
+    "Sefer Taharah": {
+        "Tum'at Met": 25,
+        "Parah Adumah": 15,
+        "Tum'at Tsara'at": 16,
+        "Metamme'ey Mishkav uMoshav": 13,
+        "She'ar Avot haTum'ah": 20,
+        "Tum'at Okhalin": 16,
+        "Kelim": 28,
+        "Mikvaot": 11
+    },
+    "Sefer Nezikin": {
+        "Hilchot Nizkei Mamon": 14,
+        "Genevah": 9,
+        "Gezelah va'Avedah": 18,
+        "Chovel uMazzik": 8,
+        "Rotzeach uShmirat Nefesh": 13
+    },
+    "Sefer Kinyan": {
+        "Mechirah": 30,
+        "Zechiyah uMattanah": 12,
+        "Shechenim": 14,
+        "Sheluchin veShuttafin": 10,
+        "Avadim": 9
+    },
+    "Sefer Mishpatim": {
+        "Sechirut": 13,
+        "She'elah uFikkadon": 8,
+        "Malveh veLoveh": 27,
+        "To'en veNit'an": 16,
+        "Nachalot": 11
+    },
+    "Sefer Shoftim": {
+        "Sanhedrin veha'Onashin haMesurin lahem": 26,
+        "Edut": 22,
+        "Mamrim": 7,
+        "Avel": 14,
+        "Melachim uMilchamot": 12
+    },
+}
+const non_perek = {
+    "Hakdama":{
+        1:"בשם ה",
+        2:"כל אלו החכמים",
+        3:"ודברים הללו"
+    },
+    "Asey":{
+        1:"מצוות עשה",
+        2:"מצווה פד",
+        3:"מצווה קסז"
+    },
+    "Lo sasey":{
+        1:"מצוות לא תעשה",
+        2:"מצווה קכג",
+        3:"מצווה רמה"
+    },
+    "perakim":{
+        1:"וראיתי לחלק",
+        2:"ספר קדושה",
+        3:"ספר טהרה"
+    },
+    "tefilos":{
+        1:"סדר תפלות",
+        2:"נסח ברכת התפלה",
+        3:"וזהו נסח כל הברכת האמצעיות",
+        4:"נסח הוודוי"
+
+
+    }
+    
+}
+function get_difference(date){
+  
+    var a = new Date("1984-04-29");
+    var b = new Date(date); 
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+    difference = Math.floor((utc2 - utc1) / _MS_PER_DAY);
+    return difference-1;
+
+}
+function section_to_perek(shiur){
+    perek=shiur;
+    books=Object.keys(RAMBAM_CONTENTS);
+    for (let i = 0; i < books.length; i++) {
+        book=books[i];
+        sections=Object.keys(RAMBAM_CONTENTS[book]);
+        for (let j = 0; j < sections.length; j++){
+            section=sections[j];
+            var perek_count=RAMBAM_CONTENTS[book][section];
+            if(perek <= perek_count){
+                return {"book":book,"section":section,"perek":perek};
+            }else{
+                perek=perek-perek_count;
+                
+            }
+        }
+    }
+}
+
+function non_perek_text(rambam){
+    const non_perakim = Object.keys(non_perek);
+    for (let i = 0; i < non_perakim.length; i++){
+        section=non_perakim[i];
+        if(rambam["section"]==section){
+            var perek=rambam["perek"]
+            rambam["perek"]=non_perek[section][perek];
+        }
+    }
+    return rambam;
+
+
+}
+
+function onechapter(date){
+    difference=get_difference(date);
+    var machzor = 1;
+    while (difference > 1017){
+        machzor=machzor+1;
+        difference = difference - 1017;
+    }
+
+    section=difference;
+
+    today=section_to_perek(section);
+    return non_perek_text(today);
+}
+function threechapter(date){
+    difference=get_difference(date);
+    var machzor = 1;
+    while (difference > 339){
+        machzor=machzor+1;
+        difference = difference - 339;
+    }
+    section=difference*3;
+    section=section+1;
+
+    today=section_to_perek(section);
+    return non_perek_text(today);
+    
+}
+
+console.log(new Date());
+const one_chapter=onechapter(new Date());
+const three_chapter=threechapter(new Date());
+document.getElementById('onechapter').innerHTML=one_chapter["section"]+" "+one_chapter["perek"];
+document.getElementById('threechapter').innerHTML=three_chapter["section"]+" "+three_chapter["perek"];
+</script>
+</body>
+</html>
