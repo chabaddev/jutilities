@@ -56,11 +56,6 @@ function calendar(year){
         }
       }
     var elapsedSimple=elapsedYears-elapsedLeap;
-    console.log(elapsedCycle);
-    console.log(elapsedYears);
-    console.log(elapsedSimple);
-    console.log(elapsedLeap);
-    console.log("---");
 
     var addCycle=multiply(cycleLength,elapsedCycle);
     var addSimple=multiply(yearLength,elapsedSimple);
